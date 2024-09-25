@@ -1,0 +1,40 @@
+﻿@model Cart
+
+<h2>Keranjang Belanja</h2>
+
+@if (Model.Items.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Produk</th>
+                <th>Harga</th>
+                <th>Jumlah</th>
+                <th>Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+                    <td>@item.Product.Name</td>
+                    <td>@item.Product.Price.ToString("C")</td>
+                    <td>@item.Quantity</td>
+                    <td>@((item.Product.Price * item.Quantity).ToString("C"))</td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3" class="text-right"><strong>Total:</strong></td>
+              @*   <td><strong>@Model.GetTotal().ToString("C")</strong></td> *@
+            </tr>
+        </tfoot>
+    </table>
+}
+else
+{
+    <p>Keranjang belanja Anda kosong.</p>
+}
+
+<a asp-action="Index" class="btn btn-primary">Lanjutkan Belanja</a>

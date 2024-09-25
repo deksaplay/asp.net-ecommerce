@@ -1,0 +1,111 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - e_commerce</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/e_commerce.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+<body>
+    <header>
+        <div class="jumbotron jumbotron-fluid bg-light text-center">
+            <div class="container">
+                <h1 class="display-4">Welcome to Our e-Commerce Platform</h1>
+                <p class="lead">Find the best products for you at unbeatable prices!</p>
+            </div>
+        </div>
+
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-primary border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">e_commerce</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Search Bar -->
+                <form class="d-flex" style="flex-grow: 1; margin-right: 10px;">
+                    <input class="form-control me-2" type="search" placeholder="Search products..." aria-label="Search">
+                    <button class="btn btn-outline-light" type="submit">Search</button>
+                </form>
+
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-end">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Admin" asp-action="Index">Admin</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-top footer bg-primary text-muted py-4">
+        <div class="container">
+            <div class="row">
+                <!-- About Us Column -->
+                <div class="col-md-3">
+                    <h5>About Us</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-light">Our Story</a></li>
+                        <li><a href="#" class="text-light">Careers</a></li>
+                        <li><a href="#" class="text-light">Blog</a></li>
+                    </ul>
+                </div>
+
+                <!-- Help Column -->
+                <div class="col-md-3">
+                    <h5>Help</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-light">Customer Service</a></li>
+                        <li><a href="#" class="text-light">FAQ</a></li>
+                        <li><a href="#" class="text-light">Return Policy</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Column -->
+                <div class="col-md-3">
+                    <h5>Contact Us</h5>
+                    <p class="text-light">Email: support@ecommerce.com</p>
+                    <p class="text-light">Phone: +123 456 789</p>
+                    <p class="text-light">Address: 123 e-Commerce St, Jakarta</p>
+                </div>
+
+                <!-- Social Media Column -->
+                <div class="col-md-3">
+                    <h5>Follow Us</h5>
+                    <a href="#" class="text-light me-3"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="text-light me-3"><i class="bi bi-twitter"></i></a>
+                    <a href="#" class="text-light me-3"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="text-light"><i class="bi bi-youtube"></i></a>
+                </div>
+            </div>
+            <div class="text-center mt-3">
+                Made with <i class="bi bi-heart-fill text-danger"></i> by Deksa e-commerce &copy; 2024
+            </div>
+        </div>
+    </footer>
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

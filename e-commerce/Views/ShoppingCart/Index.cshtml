@@ -1,0 +1,19 @@
+﻿@model List<Product>
+
+<h2>Daftar Produk</h2>
+
+<div class="row">
+    @foreach (var product in Model)
+    {
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">@product.Name</h5>
+                    <p class="card-text">@product.Description</p>
+                    <p class="card-text">Harga: @product.Price.ToString("C")</p>
+                    <a asp-action="Details" asp-route-id="@product.Id" class="btn btn-primary">Detail</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

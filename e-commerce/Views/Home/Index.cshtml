@@ -1,0 +1,106 @@
+﻿@model IEnumerable<e_commerce.Models.Product>
+
+@{
+    ViewData["Title"] = "Home Page";
+    Layout = "_LayoutCustomer";
+}
+
+<div class="row pb-3">
+    @foreach (var product in Model)
+    {
+         <div class="col-lg-3 col-sm-6">
+            <div class="row p-2">
+                <div class="col-12 p-1">
+                    <div class="card border-0 p-3 shadow  border-top border-5 rounded">
+
+                        @if (product.ImageFile != null && product.ImageFile.Count() > 0)
+                        {
+                            <img src="@product.ImageFile.FirstOrDefault().@product.ImagePath" class="card-img-top rounded" />
+                        }
+                        else
+                        {
+                            <img src="https://placehold.co/500x600/png" class="card-img-top rounded" />
+                        }
+
+                        <div class="card-body pb-0">
+                            <div class="pl-1">
+                                <p class="card-title h5 text-dark opacity-75 text-uppercase text-center">@product.Description</p>
+                                <p class="card-title text-warning text-center">by <b>@product.Name</b></p>
+                            </div>
+                            <div class="pl-1">
+                                <p class="text-dark text-opacity-75 text-center mb-0">
+                                    List Price:
+                                    <span class="text-decoration-line-through">
+                                        @product.Price
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="pl-1">
+                                <p class="text-dark text-opacity-75 text-center">
+                                    As low as:
+                                    <span>
+                                        @product.Description
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                        <div>
+                            <a asp-action="Details"
+                               asp-route-productId="@product.Id"
+                               class="btn btn-primary bg-gradient border-0 form-control">
+                                Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+   @*  <div class="container">
+    <div class="row pt-4 pb-4">
+        <div class="col-6">
+            <h2 class="text-primary">
+                Product list
+            </h2>
+        </div>
+    </div>
+
+
+    <table class="table table-bordered table-striped">
+        <tr>
+            <th>id</th>
+            <th>Image</th>
+            <th>Product Name</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th></th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>
+                    <img src='@Url.Action( "ShowImage", "Product", new { id = item.Id } )' style="height: 100px; width:100px;" />
+                </td>
+                <td>@item.Name</td>
+                <td>@item.Description</td>
+                <th>@item.Price</th>
+                <th>@item.Stock</th>
+                <td>
+                    <div class="w-75 btn-group" role="group">
+                        <a asp asp-controller="Home" asp-action="Buy" asp-route-id="@item.Id" class="btn btn-primary mx-2">
+                            <i class="bi bi-pencil-square"></i> Beli
+                        </a>
+                        <a asp asp-controller="Home" asp-action="basket" asp-route-id="@item.Id" class="btn btn-danger mx-2">
+                            <i class="bi bi-calendar-x-fill"></i> Keranuang
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        }
+    </table>
+
+</div>
+ *@

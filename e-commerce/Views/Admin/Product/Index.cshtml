@@ -1,0 +1,65 @@
+﻿@model IEnumerable<e_commerce.Models.Product>
+
+@{
+    ViewBag.Title = "Product List";
+}
+
+<div class="container"> 
+    <div class="row pt-4 pb-4">
+    <div class="col-6">
+        <h2 class="text-primary">
+            Product list
+        </h2>
+
+    </div>
+    <div class="col-6 text-end">
+            <a asp-controller="Product" asp-action="Create" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i>  Create New Product
+        </a>
+
+    </div>
+    </div>
+
+
+<table class="table table-bordered table-striped" >
+    <tr>
+        <th>id</th>
+        <th>Image</th>
+        <th>Product Name</th>
+        <th>Description</th>
+        <th>Price</th>
+        <th>Stock</th>
+        <th>Createat</th>
+        <th>updateat</th>
+        <th></th>
+    </tr>
+@foreach (var item in Model)
+
+{
+    
+            <tr>
+                <td>@item.Id</td>
+                <td>
+                    <img src='@Url.Action( "ShowImage", "Product", new { id = item.Id } )' style="height: 100px; width:100px;" />
+                </td>
+                <td>@item.Name</td>
+                <td>@item.Description</td>
+                <th>@item.Price</th>
+                <th>@item.Stock</th>
+                <td>@item.CreatedAt</td>
+                <td>@item.CreatedAt</td>
+                <td>
+                    <div class="w-75 btn-group" role="group">
+                        <a asp asp-controller="Product" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary mx-2">
+                            <i class="bi bi-pencil-square"></i> Edit
+                        </a>
+                        <a asp asp-controller="Product" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger mx-2">
+                            <i class="bi bi-calendar-x-fill"></i> Delete
+                        </a>
+                    </div>
+                </td>
+                </tr>
+}
+</table>
+
+</div>
