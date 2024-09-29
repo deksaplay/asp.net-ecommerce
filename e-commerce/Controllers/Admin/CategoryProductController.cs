@@ -15,6 +15,8 @@ namespace e_commerce.Controllers.Admin
     public class CategoryProductController : Controller
     {
         private readonly CategoryService _categoryService;
+        private IEnumerable<Category> categories;
+
         public CategoryProductController(CategoryService categoryService)
         {
             _categoryService = categoryService;
@@ -22,11 +24,10 @@ namespace e_commerce.Controllers.Admin
         public async Task<IActionResult> Index()
         {
             var cats = await _categoryService.GetAllAsync();
-
+            ViewBag.Categories = categories.ToList();
             return View("~/Views/Admin/CategoryProduct/Index.cshtml", cats);
         }
-
-
+      
         [HttpGet]
         [Route("CreateCategory")]
         public IActionResult Create()

@@ -37,8 +37,22 @@
         </div>
     </div>
 </form>
+}
+else
+{
+<p>Error: Model is null.</p>
+}
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+}
+
+@if (Model == null)
+{
+    <p>Error: Model is null.</p>
+}
+@if (ViewBag.Categories == null)
+{
+    <p>Error: Categories not loaded properly.</p>
 }

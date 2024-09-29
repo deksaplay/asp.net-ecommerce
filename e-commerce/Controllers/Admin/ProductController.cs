@@ -1,6 +1,7 @@
 ﻿using e_commerce.Models;
 using e_commerce.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace e_commerce.Controllers.Admin
 {
@@ -9,13 +10,16 @@ namespace e_commerce.Controllers.Admin
     {
 
         private readonly ProductService _productService;
-        public ProductController(ProductService productService)
+        private readonly CategoryService _categoryService;
+        public ProductController(ProductService productService, CategoryService categoryService)
         {
             _productService = productService;
+            _categoryService = categoryService;
         }
         public async Task<IActionResult> Index()
         {
             var cats = await _productService.GetAllAsync();
+           
 
             return View("~/Views/Admin/Product/Index.cshtml", cats);
         }
@@ -31,26 +35,39 @@ namespace e_commerce.Controllers.Admin
 
             Product ProductFromDB = await _productService.GetByIdAsync(id.Value);
 
+
             return File(ProductFromDB.ImageFile, "image/jpg");
         }
 
 
         [HttpGet]
         [Route("CreateProduct")]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            var categories = await _categoryService.GetAllAsync();
+          
+            // Mengirimkan model kosong ke view untuk mencegah NullReferenceException
+
             return View("~/Views/Admin/Product/Create.cshtml");
+            
         }
+       
 
         [HttpPost]
         [Route("CreateProduct")]
         public async Task<IActionResult> Create(Product product)
+
+
         {
             if (ModelState.IsValid)
             {
                 await _productService.CreateAsync(product);
                 return RedirectToAction(nameof(Index));
             }
+            // Jika ada error dalam validasi, tampilkan ulang kategori
+            var categories = await _categoryService.GetAllAsync();
+            ViewBag.Categories = new SelectList(categories, "Id", "Name");
+           
             return View("~/Views/Admin/Product/Create.cshtml", product);
         }
 
@@ -69,7 +86,9 @@ namespace e_commerce.Controllers.Admin
             {
                 return NotFound();
             }
-
+            // Ambil semua kategori dan simpan dalam ViewBag atau ViewData
+            var categories = await _categoryService.GetAllAsync();
+            ViewBag.Categories = categories;
             return View("~/Views/Admin/Product/Edit.cshtml", ProductFromDB);
         }
 
@@ -77,6 +96,7 @@ namespace e_commerce.Controllers.Admin
         [Route("UpdateProduct/{id}")]
         public async Task<IActionResult> Edit(Product product, List<IFormFile> file)
         {
+
             if (ModelState.IsValid)
             {
                 if(file != null && file.Count > 0) {
@@ -94,11 +114,17 @@ namespace e_commerce.Controllers.Admin
                     } 
                 }
 
+
                 await _productService.UpdateAsync(product);
                 return RedirectToAction(nameof(Index));
             }
+
+            // Ambil semua kategori dan simpan dalam ViewBag atau ViewData
+            var categories = await _categoryService.GetAllAsync();
+            ViewBag.Categories = categories;
             return View("~/Views/Admin/Product/Edit.cshtml", product);
         }
+       
 
         //delete Product
         [HttpGet]

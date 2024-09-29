@@ -17,5 +17,10 @@ namespace e_commerce.Models
         public int Stock { get; set; }
         public string? ImagePath { get; set; }
         public byte[]? ImageFile { get; set; }
+        public int CategoryId { get; set; }
+        public List<Category> Categories { get; set; }
+      
+
+
     }
 }
