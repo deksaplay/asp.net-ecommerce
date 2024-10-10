@@ -19,7 +19,7 @@ namespace e_commerce.Controllers.Admin
 
         public async Task<IActionResult> Index()
         {
-            var products = await _productService.GetAllAsync();
+           var products = await _productService.GetAllAsync();
             return View("~/Views/Admin/Product/Index.cshtml", products);
         }
         [HttpGet]
