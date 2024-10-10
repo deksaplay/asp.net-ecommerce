@@ -17,9 +17,13 @@ namespace e_commerce
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+            string sqlconnectionstr = builder.Configuration.GetConnectionString("DefaultConnection");
+
+            builder.Services.AddScoped<dbconnection>(aa => new dbconnection(sqlconnectionstr));
+
             builder.Services.AddScoped<InventoryService>();
             builder.Services.AddScoped<AuthService>();
-            builder.Services.AddScoped<CategoryService>();
+            builder.Services.AddScoped<ProductCategoryService>();
             builder.Services.AddScoped<ShoppingCartService>();
             builder.Services.AddScoped<CheckoutService>();
             builder.Services.AddScoped<ProductService>();
@@ -28,8 +32,8 @@ namespace e_commerce
             builder.Services.AddScoped<CustomerService>();
             builder.Services.AddScoped<PromotionService>();
             builder.Services.AddScoped<ReportService>();
-            builder.Services.AddScoped<WishlistService>();
-            builder.Services.AddScoped<ReviewService>();
+          //  builder.Services.AddScoped<WishlistService>();
+           // builder.Services.AddScoped<ReviewService>();
             builder.Services.AddScoped<UserService>();
             builder.Services.AddControllers();
 

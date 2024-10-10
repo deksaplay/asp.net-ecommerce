@@ -15,10 +15,6 @@ namespace e_commerce.Controllers
             _checkoutService = checkoutService;
         }
 
-        [HttpPost("{userId}")]
-        public async Task<Order> Checkout(int userId)
-        {
-            return await _checkoutService.CheckoutAsync(userId);
-        }
+       
     }
 }

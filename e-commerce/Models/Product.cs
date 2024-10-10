@@ -7,7 +7,6 @@ namespace e_commerce.Models
     {
         [Required]
         [StringLength(255)]
-
         public string Name { get; set; }
         public string Description { get; set; }
         [Required]
@@ -17,9 +16,9 @@ namespace e_commerce.Models
         public int Stock { get; set; }
         public string? ImagePath { get; set; }
         public byte[]? ImageFile { get; set; }
-        public int CategoryId { get; set; }
-        public List<Category> Categories { get; set; }
-      
+
+        public int? ProductCategoryId { get; set; }
+        public ProductCategory ProductCategory { get; set; }
 
 
     }

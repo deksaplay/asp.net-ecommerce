@@ -16,36 +16,6 @@ namespace e_commerce.Controllers
             _cartService = cartService;
         }
 
-        public async Task<IActionResult> Index()
-        {
-            int userId = GetUserId();
-            var cartItems = await _cartService.GetCartItemsByUserIdAsync(userId);
-            return View(cartItems);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> AddToCart(int productId, int quantity)
-        {
-            int userId = GetUserId();
-            await _cartService.AddToCartAsync(userId, productId, quantity);
-            return RedirectToAction("Index");
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Checkout()
-        {
-            int userId = GetUserId();
-            var order = await _cartService.CheckoutAsync(userId);
-            if (order == null)
-            {
-                return RedirectToAction("Index");
-            }
-            return RedirectToAction("OrderConfirmation", new { orderId = order.Id });
-        }
-
-        private int GetUserId()
-        {
-            return int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-        }
+      
     }
 }

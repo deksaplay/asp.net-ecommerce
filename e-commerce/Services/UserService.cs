@@ -7,7 +7,7 @@ namespace e_commerce.Services
 {
     public class UserService : BaseService<User>
     {
-        public UserService(ApplicationDbContext context) : base(context)
+        public UserService(ApplicationDbContext context, dbconnection dbconn) : base(context, dbconn)
         {
         }
     }

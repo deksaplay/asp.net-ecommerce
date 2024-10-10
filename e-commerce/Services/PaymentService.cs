@@ -6,7 +6,7 @@ namespace e_commerce.Services
 {
     public class PaymentService : BaseService<Payment>
     {
-        public PaymentService(ApplicationDbContext context) : base(context)
+        public PaymentService(ApplicationDbContext context, dbconnection dbconn) : base(context, dbconn)
         {
         }
 

@@ -9,7 +9,7 @@
         <p class="card-text">Harga: @Model.Price.ToString("C")</p>
 
         <form asp-action="AddToCart" method="post">
-            <input type="hidden" name="productId" value="@Model.Id" />
+            
             <div class="form-group">
                 <label for="quantity">Jumlah:</label>
                 <input type="number" id="quantity" name="quantity" value="1" min="1" class="form-control" style="width: 100px;" />

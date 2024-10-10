@@ -14,18 +14,6 @@ namespace e_commerce.Services
             _context = context;
         }
 
-        public async Task<User> AuthenticateAsync(string username, string password)
-        {
-            // Assume password is hashed and compare the hash
-            var user = await _context.Users.SingleOrDefaultAsync(u => u.Username == username && u.PasswordHash == password);
-            return user;
-        }
-
-        public async Task<User> RegisterAsync(User user)
-        {
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-            return user;
-        }
+       
     }
 }

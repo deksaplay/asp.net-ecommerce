@@ -5,7 +5,7 @@ namespace e_commerce.Services
 {
     public class InventoryService : BaseService<Inventory>
     {
-        public InventoryService(ApplicationDbContext context) : base(context)
+        public InventoryService(ApplicationDbContext context, dbconnection dbconn) : base(context, dbconn)
         {
         }
     }

@@ -5,95 +5,78 @@
     Layout = "_LayoutCustomer";
 }
 
-<div class="row pb-3">
-    @foreach (var product in Model)
-    {
-         <div class="col-lg-3 col-sm-6">
-            <div class="row p-2">
-                <div class="col-12 p-1">
-                    <div class="card border-0 p-3 shadow  border-top border-5 rounded">
-
-                        @if (product.ImageFile != null && product.ImageFile.Count() > 0)
+<div class="container my-5">
+    <div class="row g-4">
+        @foreach (var product in Model)
+        {
+            <div class="col-lg-3 col-md-4 col-sm-6 d-flex align-items-stretch">
+                <div class="card h-100 border-0 shadow-sm rounded">
+                    <div class="card-img-top p-3 d-flex justify-content-center">
+                        @if (product.ImageFile != null && product.ImageFile.Length > 0)
                         {
-                            <img src="@product.ImageFile.FirstOrDefault().@product.ImageFile" class="card-img-top rounded" />
+                            <img src="data:image/jpg;base64,@(Convert.ToBase64String(product.ImageFile))" class="img-fluid rounded" style="height: 250px; width: auto;" />
                         }
                         else
                         {
-                            <img src="https://placehold.co/500x600/png" class="card-img-top rounded" />
+                            <img src="https://placehold.co/250x300/png" class="img-fluid rounded" style="height: 250px; width: auto;" />
                         }
+                    </div>
 
-                        <div class="card-body pb-0">
-                            <div class="pl-1">
-                                <p class="card-title h5 text-dark opacity-75 text-uppercase text-center">@product.Description</p>
-                                <p class="card-title text-warning text-center"> <b>@product.Name</b></p>
-                            </div>
-                            <div class="pl-1">
-                                <p class="text-dark text-opacity-75 text-center mb-0">
-                                    List Price:
-                                    <span class="text">
-                                        @product.Price
-                                    </span>
-                                </p>
-                            </div>
-                           
-                        </div>
-                        <div>
-                            <a asp-action="Details"
-                               asp-route-productId="@product.Id"
-                               class="btn btn-primary bg-gradient border-0 form-control">
-                                Details
-                            </a>
-                        </div>
+                    <div class="card-body text-center">
+                        <h5 class="card-title text-dark font-weight-bold text-uppercase">@product.Name</h5>
+                        <p class="text-muted">@product.Description</p>
+                        <p class="text-danger h5">
+                            $@product.Price
+                        </p>
+                    </div>
+
+                    <div class="card-footer bg-transparent border-0 d-flex justify-content-center">
+                        <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" class="btn btn-primary">
+                            View Details
+                        </a>
+
                     </div>
                 </div>
             </div>
-        </div>
-    }
-</div>
-   @*  <div class="container">
-    <div class="row pt-4 pb-4">
-        <div class="col-6">
-            <h2 class="text-primary">
-                Product list
-            </h2>
-        </div>
-    </div>
-
-
-    <table class="table table-bordered table-striped">
-        <tr>
-            <th>id</th>
-            <th>Image</th>
-            <th>Product Name</th>
-            <th>Description</th>
-            <th>Price</th>
-            <th>Stock</th>
-            <th></th>
-        </tr>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.Id</td>
-                <td>
-                    <img src='@Url.Action( "ShowImage", "Product", new { id = item.Id } )' style="height: 100px; width:100px;" />
-                </td>
-                <td>@item.Name</td>
-                <td>@item.Description</td>
-                <th>@item.Price</th>
-                <th>@item.Stock</th>
-                <td>
-                    <div class="w-75 btn-group" role="group">
-                        <a asp asp-controller="Home" asp-action="Buy" asp-route-id="@item.Id" class="btn btn-primary mx-2">
-                            <i class="bi bi-pencil-square"></i> Beli
-                        </a>
-                        <a asp asp-controller="Home" asp-action="basket" asp-route-id="@item.Id" class="btn btn-danger mx-2">
-                            <i class="bi bi-calendar-x-fill"></i> Keranuang
-                        </a>
-                    </div>
-                </td>
-            </tr>
         }
-    </table>
-
+    </div>
 </div>
- *@
+
+@section Styles {
+    <style>
+        .card:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            transform: translateY(-5px);
+            transition: all 0.3s ease;
+        }
+
+        .card img {
+            max-height: 250px;
+            object-fit: cover;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+            .btn-primary:hover {
+                background-color: #0056b3;
+                border-color: #0056b3;
+            }
+
+        .card-footer {
+            margin-top: auto;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .text-muted {
+            font-size: 0.875rem;
+            color: #6c757d;
+        }
+    </style>
+}

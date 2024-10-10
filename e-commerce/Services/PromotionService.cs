@@ -6,7 +6,7 @@ namespace e_commerce.Services
 {
     public class PromotionService : BaseService<Promotion>
     {
-        public PromotionService(ApplicationDbContext context) : base(context)
+        public PromotionService(ApplicationDbContext context, dbconnection dbconn) : base(context, dbconn)
         {
         }
     }

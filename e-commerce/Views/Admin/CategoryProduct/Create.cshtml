@@ -1,10 +1,9 @@
-﻿@model e_commerce.Models.Category
-
+﻿
     @{
         ViewBag.Title = "Create";
     }
 
-
+ @model System.Data.DataTable
 
 
 <form method="post">
@@ -15,13 +14,17 @@
         </div>
         <div class="mb-3 row p-1">
 
-            <label asp-for="Name" class="p-0"></label>
-            <input asp-for="Name" type="text" class="form-control" />
+            <label class="p-0">Name</label>
+
+            <input asp-for='Rows[0]["Name"]' type="text" class="form-control" />
+            <span asp-validation-for='Rows[0]["Name"]' class="text-danger"></span>
         </div>
         <div class="mb-3 row p-1">
 
-            <label asp-for="Description" class="p-0"></label>
-            <input asp-for="Description" type="text" class="form-control" />
+            <label class="p-0">Description</label>
+
+            <input asp-for='Rows[0]["Description"]' type="text" class="form-control" />
+            <span asp-validation-for='Rows[0]["Description"]' class="text-danger"></span>
         </div>
         <div class="row mt-3">
                 
@@ -30,29 +33,17 @@
             </div>
              
             <div class="col-6 col-md-3 mb-3">
-                <a asp-controller="CategoryProduct" asp-action="index" class="btn btn-secondary border form-control">
-                    Back To List
-                </a>
+                <a asp-action="Index" class="btn btn-secondary">Back to List</a>
             </div>
         </div>
     </div>
 </form>
-}
-else
-{
-<p>Error: Model is null.</p>
-}
+
+
+
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
 
-@if (Model == null)
-{
-    <p>Error: Model is null.</p>
-}
-@if (ViewBag.Categories == null)
-{
-    <p>Error: Categories not loaded properly.</p>
-}

@@ -1,6 +1,6 @@
 ﻿using e_commerce.Data;
 using e_commerce.Models;
-
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -10,10 +10,15 @@ namespace e_commerce.Base
     public class BaseService<T> where T : BaseEntity
     {
         protected readonly ApplicationDbContext _context;
+        dbconnection dbconn;
 
-        public BaseService(ApplicationDbContext context)
+        public BaseService(ApplicationDbContext context, dbconnection dbconn)
         {
             _context = context;
+            this.dbconn = dbconn;
+        }
+        public SqlConnection GetConnection() { 
+            return this.dbconn.GetConnection();
         }
 
         public async Task<IEnumerable<T>> GetAllAsync()

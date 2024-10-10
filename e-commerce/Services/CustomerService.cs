@@ -7,7 +7,7 @@ namespace e_commerce.Services
 {
     public class CustomerService : BaseService<Customer>
     {
-        public CustomerService(ApplicationDbContext context) : base(context)
+        public CustomerService(ApplicationDbContext context, dbconnection dbconn) : base(context, dbconn)
         {
         }
     }

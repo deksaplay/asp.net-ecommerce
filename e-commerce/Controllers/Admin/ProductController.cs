@@ -8,171 +8,167 @@ namespace e_commerce.Controllers.Admin
     [Route("admin/[controller]")]
     public class ProductController : Controller
     {
-
         private readonly ProductService _productService;
-        private readonly CategoryService _categoryService;
-        public ProductController(ProductService productService, CategoryService categoryService)
+        private readonly ProductCategoryService _categoryService;
+
+        public ProductController(ProductService productService, ProductCategoryService categoryService)
         {
             _productService = productService;
             _categoryService = categoryService;
         }
+
         public async Task<IActionResult> Index()
         {
-            var cats = await _productService.GetAllAsync();
-           
-
-            return View("~/Views/Admin/Product/Index.cshtml", cats);
+            var products = await _productService.GetAllAsync();
+            return View("~/Views/Admin/Product/Index.cshtml", products);
         }
-
         [HttpGet]
-        [Route("ShowImage/{id}")]
-        public async Task<ActionResult> ShowImage(int? id)
+        public async Task<IActionResult> Details(int id)
         {
-            if (id == null || id <= 0)
+            // Fetch the product from the database using the service
+            var product = await _productService.GetByIdAsync(id);
+
+            if (product == null)
             {
                 return NotFound();
             }
 
-            Product ProductFromDB = await _productService.GetByIdAsync(id.Value);
+            return View(product); // Pass the product to the view
 
-
-            return File(ProductFromDB.ImageFile, "image/jpg");
         }
 
+            [HttpGet]
+        [Route("ShowImage/{id}")]
+        public async Task<ActionResult> ShowImage(int? id)
+        {
+            if (!id.HasValue || id <= 0)
+            {
+                return NotFound();
+            }
+
+            var product = await _productService.GetByIdAsync(id.Value);
+            if (product?.ImageFile == null)
+            {
+                return NotFound(); // Ensure the image exists
+            }
+
+            return File(product.ImageFile, "image/jpg");
+        }
 
         [HttpGet]
         [Route("CreateProduct")]
         public async Task<IActionResult> Create()
         {
-            var categories = await _categoryService.GetAllAsync();
-          
-            // Mengirimkan model kosong ke view untuk mencegah NullReferenceException
-
+            // Populate categories for the dropdown
+            ViewData["Categories"] = new SelectList(await _categoryService.GetAllAsync(), "Id", "Name");
             return View("~/Views/Admin/Product/Create.cshtml");
-            
         }
-       
 
         [HttpPost]
         [Route("CreateProduct")]
-        public async Task<IActionResult> Create(Product product)
-
-
+        public async Task<IActionResult> Create(Product product, List<IFormFile> files)
         {
             if (ModelState.IsValid)
             {
+                if (files != null && files.Count > 0)
+                {
+                    using (var ms = new MemoryStream())
+                    {
+                        await files[0].CopyToAsync(ms);
+                        product.ImageFile = ms.ToArray();
+                        product.ImagePath = files[0].FileName;
+                    }
+                }
+
                 await _productService.CreateAsync(product);
                 return RedirectToAction(nameof(Index));
             }
-            // Jika ada error dalam validasi, tampilkan ulang kategori
-            var categories = await _categoryService.GetAllAsync();
-            ViewBag.Categories = new SelectList(categories, "Id", "Name");
-           
+
+            // Repopulate categories for the dropdown if model state is invalid
+            ViewData["Categories"] = new SelectList(await _categoryService.GetAllAsync(), "Id", "Name", product.ProductCategoryId);
             return View("~/Views/Admin/Product/Create.cshtml", product);
         }
 
-        //update Product
         [HttpGet]
         [Route("UpdateProduct/{id}")]
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || id <= 0)
+            if (!id.HasValue || id <= 0)
             {
                 return NotFound();
             }
 
-            Product ProductFromDB = await _productService.GetByIdAsync(id.Value);
-            if (ProductFromDB == null)
+            var product = await _productService.GetByIdAsync(id.Value);
+            if (product == null)
             {
                 return NotFound();
             }
-            // Ambil semua kategori dan simpan dalam ViewBag atau ViewData
-            var categories = await _categoryService.GetAllAsync();
-            ViewBag.Categories = categories;
-            return View("~/Views/Admin/Product/Edit.cshtml", ProductFromDB);
+
+            // Populate categories for the dropdown
+            ViewData["Categories"] = new SelectList(await _categoryService.GetAllAsync(), "Id", "Name", product.ProductCategoryId);
+            return View("~/Views/Admin/Product/Edit.cshtml", product);
         }
 
         [HttpPost]
         [Route("UpdateProduct/{id}")]
-        public async Task<IActionResult> Edit(Product product, List<IFormFile> file)
+        public async Task<IActionResult> Edit(Product product, List<IFormFile> files)
         {
-
             if (ModelState.IsValid)
             {
-                if(file != null && file.Count > 0) {
-                    Stream input = file[0].OpenReadStream();
-                    byte[] buffer = new byte[16 * 1024];
-                    using (MemoryStream ms = new MemoryStream())
+                if (files != null && files.Count > 0)
+                {
+                    using (var ms = new MemoryStream())
                     {
-                        int read;
-                        while ((read = input.Read(buffer, 0, buffer.Length)) > 0)
-                        {
-                            ms.Write(buffer, 0, read);
-                        }
-                        product.ImagePath = file[0].FileName;
+                        await files[0].CopyToAsync(ms);
                         product.ImageFile = ms.ToArray();
-                    } 
+                        product.ImagePath = files[0].FileName;
+                    }
                 }
-
 
                 await _productService.UpdateAsync(product);
                 return RedirectToAction(nameof(Index));
             }
 
-            // Ambil semua kategori dan simpan dalam ViewBag atau ViewData
-            var categories = await _categoryService.GetAllAsync();
-            ViewBag.Categories = categories;
+            // Repopulate categories for the dropdown if model state is invalid
+            ViewData["Categories"] = new SelectList(await _categoryService.GetAllAsync(), "Id", "Name", product.ProductCategoryId);
             return View("~/Views/Admin/Product/Edit.cshtml", product);
         }
-       
 
-        //delete Product
         [HttpGet]
         [Route("DeleteProduct/{id}")]
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || id <= 0)
+            if (!id.HasValue || id <= 0)
             {
                 return NotFound();
             }
 
-            Product productFromDB = await _productService.GetByIdAsync(id.Value);
-            if (productFromDB == null)
+            var product = await _productService.GetByIdAsync(id.Value);
+            if (product == null)
             {
                 return NotFound();
             }
 
-            return View("~/Views/Admin/Product/delete.cshtml", productFromDB);
+            return View("~/Views/Admin/Product/Delete.cshtml", product);
         }
-
 
         [HttpPost]
         [Route("DeleteProduct/{id}")]
-        public async Task<IActionResult> DeletePOST(int? id)
-
+        public async Task<IActionResult> DeleteConfirmed(int? id)
         {
-            if (id == null || id <= 0)
+            if (!id.HasValue || id <= 0)
             {
                 return NotFound();
             }
 
-            Product? productFromDB = null;
-            try
+            var product = await _productService.GetByIdAsync(id.Value);
+            if (product == null)
             {
-                productFromDB = await _productService.GetByIdAsync(id.Value);
-                if (productFromDB == null)
-                {
-                    return NotFound(nameof(Product));
-                }
+                return NotFound();
+            }
 
-                await _productService.DeleteAsync(id.Value);
-                return RedirectToAction(nameof(Index));
-            }
-            catch (Exception ex)
-            {
-                ViewData["ErrorMsg"] = ex.Message;
-                return View("~/Views/Admin/Product/delete.cshtml", productFromDB);
-            }
+            await _productService.DeleteAsync(id.Value);
+            return RedirectToAction(nameof(Index));
         }
     }
 }

@@ -10,22 +10,22 @@ namespace e_commerce.Controllers
     public class CategoryController : BaseController
     {
       
-        private readonly CategoryService _categoryService;
+        private readonly ProductCategoryService _categoryService;
 
 
-        public CategoryController(CategoryService categoryService)
+        public CategoryController(ProductCategoryService categoryService)
         {
             _categoryService = categoryService;
         }
 
         [HttpGet]
-        public async Task<IEnumerable<Category>> GetAll()
+        public async Task<IEnumerable<ProductCategory>> GetAll()
         {
             return await _categoryService.GetAllAsync();
         }
 
         [HttpGet("{id}")]
-        public async Task<Category> GetById(int id)
+        public async Task<ProductCategory> GetById(int id)
         {
             return await _categoryService.GetByIdAsync(id);
         }
@@ -33,13 +33,13 @@ namespace e_commerce.Controllers
         [HttpPost]
         
 
-          public async Task<Category> Create([FromBody] Category category)
+          public async Task<ProductCategory> Create([FromBody] ProductCategory category)
          {
           return await _categoryService.CreateAsync(category);
         }
 
         [HttpPut("{id}")]
-        public async Task<Category> Update(int id, [FromBody] Category category)
+        public async Task<ProductCategory> Update(int id, [FromBody] ProductCategory category)
         {
             category.Id = id;
             return await _categoryService.UpdateAsync(category);
