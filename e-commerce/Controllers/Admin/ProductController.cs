@@ -86,10 +86,12 @@ namespace e_commerce.Controllers.Admin
                 return RedirectToAction(nameof(Index));
             }
 
-            // Repopulate categories for the dropdown if model state is invalid
+            // Fetch the list of products to pass to the view
+            var products = await _productService.GetAllAsync();
             ViewData["Categories"] = new SelectList(await _categoryService.GetAllAsync(), "Id", "Name", product.ProductCategoryId);
-            return View("~/Views/Admin/Product/Create.cshtml", product);
+            return View("~/Views/Admin/Product/Index.cshtml", products);
         }
+
 
         [HttpGet]
         [Route("UpdateProduct/{id}")]
@@ -110,20 +112,25 @@ namespace e_commerce.Controllers.Admin
             ViewData["Categories"] = new SelectList(await _categoryService.GetAllAsync(), "Id", "Name", product.ProductCategoryId);
             return View("~/Views/Admin/Product/Edit.cshtml", product);
         }
-
         [HttpPost]
         [Route("UpdateProduct/{id}")]
-        public async Task<IActionResult> Edit(Product product, List<IFormFile> files)
+        public async Task<IActionResult> Edit(Product product, List<IFormFile> file)
         {
             if (ModelState.IsValid)
             {
-                if (files != null && files.Count > 0)
+                if (file != null && file.Count > 0)
                 {
-                    using (var ms = new MemoryStream())
+                    Stream input = file[0].OpenReadStream();
+                    byte[] buffer = new byte[16 * 1024];
+                    using (MemoryStream ms = new MemoryStream())
                     {
-                        await files[0].CopyToAsync(ms);
+                        int read;
+                        while ((read = input.Read(buffer, 0, buffer.Length)) > 0)
+                        {
+                            ms.Write(buffer, 0, read);
+                        }
+                        product.ImagePath = file[0].FileName;
                         product.ImageFile = ms.ToArray();
-                        product.ImagePath = files[0].FileName;
                     }
                 }
 
@@ -131,10 +138,12 @@ namespace e_commerce.Controllers.Admin
                 return RedirectToAction(nameof(Index));
             }
 
-            // Repopulate categories for the dropdown if model state is invalid
+            // Fetch the list of products to pass to the view
+            var products = await _productService.GetAllAsync();
             ViewData["Categories"] = new SelectList(await _categoryService.GetAllAsync(), "Id", "Name", product.ProductCategoryId);
-            return View("~/Views/Admin/Product/Edit.cshtml", product);
+            return View("~/Views/Admin/Product/Edit.cshtml", products);
         }
+
 
         [HttpGet]
         [Route("DeleteProduct/{id}")]
