@@ -16,13 +16,15 @@ namespace e_commerce.Controllers.Admin
             _productService = productService;
             _categoryService = categoryService;
         }
-
+        [HttpGet]
+       
         public async Task<IActionResult> Index()
         {
            var products = await _productService.GetAllAsync();
             return View("~/Views/Admin/Product/Index.cshtml", products);
         }
-        [HttpGet]
+
+        
         public async Task<IActionResult> Details(int id)
         {
             // Fetch the product from the database using the service
@@ -37,7 +39,7 @@ namespace e_commerce.Controllers.Admin
 
         }
 
-            [HttpGet]
+        [HttpGet]
         [Route("ShowImage/{id}")]
         public async Task<ActionResult> ShowImage(int? id)
         {
