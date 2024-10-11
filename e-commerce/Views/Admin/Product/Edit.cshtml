@@ -43,7 +43,12 @@
                 <input asp-for="Stock" type="text" class="form-control" />
                 <span asp-validation-for="Stock" class="text-danger"></span>
             </div>
-        </div>        
+        </div>
+        <div class="mb-3">
+            <label asp-for="ProductCategory" class="control-label"></label>
+            <select asp-for="ProductCategoryId" asp-items="@(ViewData["Categories"] as SelectList)" class="form-control"></select>
+            <span asp-validation-for="ProductCategoryId" class="text-danger"></span>
+        </div>
         <div class="mb-3 row p-1">
             <label asp-for="ImageFile" class="p-0"></label>
             <div class="col-sm-10">

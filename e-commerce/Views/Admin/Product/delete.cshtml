@@ -51,6 +51,11 @@
 				<span asp-validation-for="Stock" class="text-danger"></span>
 			</div>
 		</div>
+		<div class="mb-3">
+			<label asp-for="ProductCategory" class="control-label"></label>
+			<select asp-for="ProductCategoryId" asp-items="@(ViewData["Categories"] as SelectList)" class="form-control"></select>
+			<span asp-validation-for="ProductCategoryId" class="text-danger"></span>
+		</div>
 		<div class="row mt-3">
 			<div class="col-6 col-md-3 mb-3">
 				<button type="submit" class="btn btn-primary form-control">delete</button>

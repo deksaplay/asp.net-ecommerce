@@ -32,7 +32,7 @@
     </div>
 
     <div class="mb-3">
-        <label asp-for="ProductCategoryId" class="control-label"></label>
+        <label asp-for="ProductCategory" class="control-label"></label>
         <select asp-for="ProductCategoryId" asp-items="@(ViewData["Categories"] as SelectList)" class="form-control"></select>
         <span asp-validation-for="ProductCategoryId" class="text-danger"></span>
     </div>

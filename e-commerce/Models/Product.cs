@@ -18,7 +18,7 @@ namespace e_commerce.Models
         public byte[]? ImageFile { get; set; }
 
         public int? ProductCategoryId { get; set; }
-        public ProductCategory ProductCategory { get; set; }
+        public virtual ProductCategory ProductCategory { get; set; }
 
 
     }

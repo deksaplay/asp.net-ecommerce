@@ -23,6 +23,13 @@ namespace e_commerce.Services
                 .Include(p => p.ProductCategory) // Ensure related data is included
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
+        public async Task<IEnumerable<Product>> GetAllAsync()
+        {
+            return await _context.Products
+                                 .Include(p => p.ProductCategory) // Include the product category
+                                 .ToListAsync();
+        }
+
 
     }
 }

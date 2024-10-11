@@ -17,6 +17,6 @@ namespace e_commerce.Models
         [DisplayName("Description")]
         [StringLength(500, ErrorMessage = "Description cannot be longer than 500 characters")]
         public string Description { get; set; }
-        public List<Product> Products { get; set; }
+        public virtual ICollection<Product> Products { get; set; }
     }
 }

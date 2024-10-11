@@ -55,9 +55,9 @@ namespace e_commerce
 
             app.UseAuthorization();
 
-            app.MapControllerRoute(
-               name: "admin",
-               pattern: "{area=admin}/{controller=Product}/{action=Index}/{id?}");
+            //app.MapControllerRoute(
+            //   name: "admin",
+            //   pattern: "{area=admin}/{controller=Product}/{action=Index}/{id?}");
 
             app.MapControllerRoute(
                 name: "default",
