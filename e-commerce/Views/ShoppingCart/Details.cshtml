@@ -22,15 +22,16 @@
             <div class="col-lg-9">
                 <div class="table-responsive">
                     <table class="table table-bordered text-center">
-                        <thead class="thread-light">
+                        <thead class="rounded-header">
                             <tr>
-                                <th>Product</th>
-                                <th>Price</th>
-                                <th>Quantity</th>
-                                <th>Total</th>
-                                <th>Action</th>
+                                <th scope="col">Product</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Total</th>
+                                <th scope="col">Action</th>
                             </tr>
                         </thead>
+
                         <tbody id="cart-items">
                             @foreach (var product in Model)
 
@@ -121,6 +122,18 @@
     <style>
         .table th, .table td {
             vertical-align: middle;
+        }
+
+        .rounded-header th {
+            background-color: #f8f9fa;
+            color: #343a40;
+            border-top-left-radius: 0.5rem;
+            border-top-right-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .rounded-header th {
+            padding: 15px;
         }
 
         .table img {
