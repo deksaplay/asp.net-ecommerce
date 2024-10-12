@@ -1,4 +1,173 @@
-﻿@model e_commerce.Models.Product
+﻿@model IEnumerable<e_commerce.Models.Product>
+
+@{
+    ViewData["Title"] = "Shopping Cart";
+
+    Layout = "_LayoutCustomer";
+}
+
+<div class="container my-5">
+    <h2 class="text-center mb-4">Your Shopping Cart</h2>
+
+    @if (!Model.Any())
+
+    {
+        <p class="text-center text-muted">Your cart is empty!</p>
+    }
+
+    else
+
+    {
+        <div class="row">
+            <div class="col-lg-9">
+                <div class="table-responsive">
+                    <table class="table table-bordered text-center">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Product</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cart-items">
+                            @foreach (var product in Model)
+
+                            {
+                                <tr id="product-@product.Id">
+                                    <td class="align-middle">
+                                        <div class="d-flex align-items-center">
+                                            <img src="@(product.ImageFile != null && product.ImageFile.Length > 0 ?
+                                                        $"data:image/jpg;base64,{Convert.ToBase64String(product.ImageFile)}" :
+                                                        "https://placehold.co/100x100/png")"
+                                                 class="img-fluid rounded mr-3" style="width: 100px;" />
+                                            <div>
+                                                <h5 class="text-dark font-weight-bold">@product.Name</h5>
+                                                <p class="text-muted">@product.Description</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="align-middle">$@product.Price</td>
+                                    <td class="align-middle">@product.Stock</td>
+                                    <td class="align-middle text-danger font-weight-bold">$@(product.Price * product.Stock)</td>
+                                    <td class="align-middle">
+                                        <button class="btn btn-sm btn-danger" onclick="removeFromCart(@product.Id)">Remove</button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-lg-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Order Summary</h5>
+                        <hr />
+                        <p class="d-flex justify-content-between">
+                            <span>Subtotal</span>
+                            <span id="subtotal">$@Model.Sum(product => product.Price * product.Stock)</span>
+                        </p>
+                      <p class="d-flex justify-content-between">
+                            <span>Tax (10%)</span>
+                            <span id="tax">$@((Model.Sum(product => product.Price * product.Stock) * 0.10).ToString("0.00"))</span>
+                        </p>
+                        <h5 class="d-flex justify-content-between font-weight-bold">
+                            <span>Total</span>
+                            <span id="total">$@(Model.Sum(product => product.Price * product.Stock) * 1.10).ToString("0.00")</span>
+                        </h5> 
+                        <a href="/Checkout" class="btn btn-success btn-block mt-3">Proceed to Checkout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+        function removeFromCart(productId) {
+            $.ajax({
+                url: '@Url.Action("RemoveFromCart", "ShoppingCart")',
+                type: 'POST',
+                data: { id: productId },
+                success: function(response) {
+                    if (response.success) {
+                        // Remove product row from the table
+                        $('#product-' + productId).remove();
+
+                        // Update the subtotal, tax, and total
+                        $('#subtotal').text('$' + response.subtotal.toFixed(2));
+                        $('#tax').text('$' + response.tax.toFixed(2));
+                        $('#total').text('$' + response.total.toFixed(2));
+                    } else {
+                        alert('Error removing product from the cart.');
+                    }
+                },
+                error: function() {
+                    alert('An error occurred while processing the request.');
+                }
+            });
+        }
+    </script>
+}
+
+
+@section Styles {
+    <style>
+        .table th, .table td {
+            vertical-align: middle;
+        }
+
+        .table img {
+            max-height: 100px;
+            object-fit: cover;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+
+            .btn-danger:hover {
+                background-color: #c82333;
+                border-color: #bd2130;
+            }
+
+        .card {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-success {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+
+            .btn-success:hover {
+                background-color: #218838;
+                border-color: #1e7e34;
+            }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+    </style>
+}
+
+
+
+
+
+
+
+
+
+
+@* @model e_commerce.Models.Product
 
 @{
     ViewData["Title"] = "Product Details";
@@ -59,3 +228,4 @@
         </div>
     </div>
 </div>
+ *@
