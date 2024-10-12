@@ -1,5 +1,6 @@
 using e_commerce.Data;
 using e_commerce.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
 namespace e_commerce
@@ -64,5 +65,19 @@ namespace e_commerce
                 pattern: "{controller=Home}/{action=Index}/{id?}");
             app.Run();
         }
+
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/Account/Login";  // Redirect to login page
+                    options.AccessDeniedPath = "/Account/AccessDenied"; // In case of denied access
+                });
+
+            services.AddAuthorization();
+            services.AddControllersWithViews();
+        }
+
     }
 }

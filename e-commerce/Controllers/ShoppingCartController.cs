@@ -1,6 +1,7 @@
 ﻿using e_commerce.Data;
 using e_commerce.Models;
 using e_commerce.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -20,7 +21,13 @@ namespace e_commerce.Controllers
 
             return View(cartItems);
         }
+        [Authorize]  // Protect this action, only authenticated users can access
+        public IActionResult Checkout()
+        {
+            // Logic for displaying the checkout page
+            return View();
+        }
 
-       
+
     }
 }
