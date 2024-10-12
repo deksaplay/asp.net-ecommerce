@@ -22,7 +22,7 @@
             <div class="col-lg-9">
                 <div class="table-responsive">
                     <table class="table table-bordered text-center">
-                        <thead class="thead-light">
+                        <thead class="thread-light">
                             <tr>
                                 <th>Product</th>
                                 <th>Price</th>
@@ -70,14 +70,15 @@
                             <span>Subtotal</span>
                             <span id="subtotal">$@Model.Sum(product => product.Price * product.Stock)</span>
                         </p>
-                      <p class="d-flex justify-content-between">
+                        <p class="d-flex justify-content-between">
                             <span>Tax (10%)</span>
-                            <span id="tax">$@((Model.Sum(product => product.Price * product.Stock) * 0.10).ToString("0.00"))</span>
+                            <span id="tax">$@((Model.Sum(product => product.Price * (decimal)product.Stock) * 0.10m).ToString("0.00"))</span>
                         </p>
                         <h5 class="d-flex justify-content-between font-weight-bold">
                             <span>Total</span>
-                            <span id="total">$@(Model.Sum(product => product.Price * product.Stock) * 1.10).ToString("0.00")</span>
-                        </h5> 
+                            <span id="total">$@((Model.Sum(product => product.Price * (decimal)product.Stock) * 1.10m).ToString("0.00"))</span>
+                        </h5>
+
                         <a href="/Checkout" class="btn btn-success btn-block mt-3">Proceed to Checkout</a>
                     </div>
                 </div>
