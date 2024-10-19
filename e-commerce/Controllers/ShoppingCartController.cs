@@ -10,6 +10,11 @@ namespace e_commerce.Controllers
 {
     public class ShoppingCartController : Controller
     {
+        private readonly ProductService _productService;
+        public ShoppingCartController(ProductService productService)
+        {
+            _productService = productService;
+        }
         public IActionResult Details()
         {
             // Example data, you would replace this with your database logic
@@ -21,13 +26,20 @@ namespace e_commerce.Controllers
 
             return View(cartItems);
         }
+        public IActionResult Details_product(int id)
+        {
+            var product = _productService.GetProductById(id);
+            if (product == null)
+            {
+                return NotFound();
+            }
         [Authorize]  // Protect this action, only authenticated users can access
         public IActionResult Checkout()
         {
             // Logic for displaying the checkout page
             return View();
         }
+       
 
-
+        }
     }
-}
