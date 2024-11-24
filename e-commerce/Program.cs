@@ -29,7 +29,7 @@ namespace e_commerce
             builder.Services.AddScoped<CheckoutService>();
             builder.Services.AddScoped<ProductService>();
             builder.Services.AddScoped<PaymentService>();
-            builder.Services.AddScoped<OrderService>();
+         //   builder.Services.AddScoped<OrderService>();
             builder.Services.AddScoped<CustomerService>();
             builder.Services.AddScoped<PromotionService>();
             builder.Services.AddScoped<ReportService>();

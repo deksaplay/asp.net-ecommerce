@@ -38,10 +38,10 @@ where id = @p_id";
             var cnn = this.GetConnection();
             var cmd = cnn.CreateCommand();
             cmd.CommandText =
-                @"uodate ProductCategories set
+                @"update ProductCategories set
 name = @p_name,
 description = @p_description,
-UpdatedAt = getdate()
+UpdatedAt = get date()
 where id = @p_id
 ";
             cmd.Parameters.AddWithValue("p_id", category.Id);
@@ -51,22 +51,22 @@ where id = @p_id
 
             return "OK";
         }
-        public string UpdateTableCategory(DataTable updatedt)
+        public string UpdateTableCategory(DataTable updated)
         {
             var cnn = this.GetConnection();
-            for (int ii = 0; ii < updatedt.Rows.Count; ii++)
+            for (int ii = 0; ii < updated.Rows.Count; ii++)
             {
                 var cmd = cnn.CreateCommand();
                 cmd.CommandText =
                     @"update ProductCategories set
     name = @p_name,
     description = @p_description,
-    UpdatedAt = getdate()
+    UpdatedAt = get date()
 where id = @p_id
 ";
-                cmd.Parameters.AddWithValue("p_id", updatedt.Rows[ii]["id"]);
-                cmd.Parameters.AddWithValue("p_name", updatedt.Rows[ii]["name"]);
-                cmd.Parameters.AddWithValue("p_description", updatedt.Rows[ii]["description"]);
+                cmd.Parameters.AddWithValue("p_id", updated.Rows[ii]["id"]);
+                cmd.Parameters.AddWithValue("p_name", updated.Rows[ii]["name"]);
+                cmd.Parameters.AddWithValue("p_description", updated.Rows[ii]["description"]);
                 cmd.ExecuteNonQuery();
             }
             return "OK";

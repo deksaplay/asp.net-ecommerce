@@ -68,28 +68,37 @@ namespace e_commerce.Controllers.Admin
 
         [HttpPost]
         [Route("CreateProduct")]
-        public async Task<IActionResult> Create(Product product, List<IFormFile> files)
+        public async Task<IActionResult> Create(Product product, List<IFormFile> ImageFile)
         {
-            if (ModelState.IsValid)
+            try
             {
-                if (files != null && files.Count > 0)
+                //if (ModelState.IsValid)
+                //{
+                //}
+
+                if (ImageFile != null && ImageFile.Count > 0)
                 {
                     using (var ms = new MemoryStream())
                     {
-                        await files[0].CopyToAsync(ms);
+                        await ImageFile[0].CopyToAsync(ms);
                         product.ImageFile = ms.ToArray();
-                        product.ImagePath = files[0].FileName;
+                        product.ImagePath = ImageFile[0].FileName;
+
+                        throw new Exception("fdfdsfds");
                     }
                 }
 
                 await _productService.CreateAsync(product);
                 return RedirectToAction(nameof(Index));
             }
-
-            // Fetch the list of products to pass to the view
-            var products = await _productService.GetAllAsync();
-            ViewData["Categories"] = new SelectList(await _categoryService.GetAllAsync(), "Id", "Name", product.ProductCategoryId);
-            return View("~/Views/Admin/Product/Index.cshtml", products);
+            catch (Exception ex)
+            {
+                // Fetch the list of products to pass to the view
+                var products = await _productService.GetAllAsync();
+                ViewData["Categories"] = new SelectList(await _categoryService.GetAllAsync(), "Id", "Name", product.ProductCategoryId);
+                ViewData["ErrMsg"] = ex.Message;
+                return View("~/Views/Admin/Product/Create.cshtml", products);
+            }
         }
 
 

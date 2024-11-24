@@ -6,7 +6,7 @@
 
 <h2>Create Product</h2>
 
-<form asp-action="CreateProduct" method="post" enctype="multipart/form-data">
+<form method="post" enctype="multipart/form-data">
     <div class="mb-3">
         <label asp-for="Name" class="control-label"></label>
         <input asp-for="Name" class="form-control" />
@@ -50,4 +50,9 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script>
+        if ("@(ViewData["ErrMsg"] as string)" != ""){
+            alert("@(ViewData["ErrMsg"] as string)");
+        }
+    </script>
 }
