@@ -33,19 +33,17 @@ namespace e_commerce
             builder.Services.AddScoped<CustomerService>();
             builder.Services.AddScoped<PromotionService>();
             builder.Services.AddScoped<ReportService>();
-          //  builder.Services.AddScoped<WishlistService>();
-           // builder.Services.AddScoped<ReviewService>();
+            //  builder.Services.AddScoped<WishlistService>();
+            // builder.Services.AddScoped<ReviewService>();
             builder.Services.AddScoped<UserService>();
             builder.Services.AddControllers();
 
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
@@ -56,28 +54,14 @@ namespace e_commerce
 
             app.UseAuthorization();
 
-            //app.MapControllerRoute(
-            //   name: "admin",
-            //   pattern: "{area=admin}/{controller=Product}/{action=Index}/{id?}");
-
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
+
             app.Run();
+
+
+
         }
-
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options =>
-                {
-                    options.LoginPath = "/Account/Login";  // Redirect to login page
-                    options.AccessDeniedPath = "/Account/AccessDenied"; // In case of denied access
-                });
-
-            services.AddAuthorization();
-            services.AddControllersWithViews();
-        }
-
     }
 }
