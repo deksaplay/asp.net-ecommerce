@@ -83,21 +83,19 @@ namespace e_commerce.Controllers.Admin
                         await ImageFile[0].CopyToAsync(ms);
                         product.ImageFile = ms.ToArray();
                         product.ImagePath = ImageFile[0].FileName;
-
-                        throw new Exception("fdfdsfds");
                     }
                 }
-
+                
                 await _productService.CreateAsync(product);
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
             {
                 // Fetch the list of products to pass to the view
-                var products = await _productService.GetAllAsync();
+                //var products = await _productService.GetAllAsync();
                 ViewData["Categories"] = new SelectList(await _categoryService.GetAllAsync(), "Id", "Name", product.ProductCategoryId);
                 ViewData["ErrMsg"] = ex.Message;
-                return View("~/Views/Admin/Product/Create.cshtml", products);
+                return View("~/Views/Admin/Product/Create.cshtml", product);
             }
         }
 
@@ -123,9 +121,9 @@ namespace e_commerce.Controllers.Admin
         }
         [HttpPost]
         [Route("UpdateProduct/{id}")]
-        public async Task<IActionResult> Edit(Product product, List<IFormFile> file)
+        public async Task<IActionResult> Edit(Product product, int? id, List<IFormFile> file)
         {
-            if (ModelState.IsValid)
+            try
             {
                 if (file != null && file.Count > 0)
                 {
@@ -141,16 +139,48 @@ namespace e_commerce.Controllers.Admin
                         product.ImagePath = file[0].FileName;
                         product.ImageFile = ms.ToArray();
                     }
+                    await _productService.UpdateAsync(product);
+                }
+                else
+                {
+                    var productori = await _productService.GetByIdAsync(id.Value);
+
+                    productori.Name = product.Name;
+                    productori.Description = product.Description;
+                    productori.Price = product.Price;
+                    productori.Stock = product.Stock;
+                    productori.ProductCategory = product.ProductCategory;
+                    productori.CreatedAt = product.CreatedAt;
+                    productori.UpdatedAt = product.UpdatedAt;
+                    productori.ImageFile = product.ImageFile;
+                    productori.ImagePath = product.ImagePath;
+                    productori.Description = product.Description;
+
+                    ;
+                    await _productService.UpdateAsync(productori);
                 }
 
-                await _productService.UpdateAsync(product);
                 return RedirectToAction(nameof(Index));
+
+            }
+            catch (Exception ex)
+            {
+                //// If we got this far, something failed; redisplay the form
+                //// Fetch the product again from the database to return the correct model
+                //var existingProduct = await _productService.GetByIdAsync(product.Id);
+                //if (existingProduct == null)
+                //{
+                //    return NotFound();
+                //}
+
+                //// Fetch the list of products to pass to the view
+                //var products = await _productService.GetAllAsync();
+
+
+                ViewData["Categories"] = new SelectList(await _categoryService.GetAllAsync(), "Id", "Name", product.ProductCategoryId);
+                return View("~/Views/Admin/Product/Edit.cshtml", product);
             }
 
-            // Fetch the list of products to pass to the view
-            var products = await _productService.GetAllAsync();
-            ViewData["Categories"] = new SelectList(await _categoryService.GetAllAsync(), "Id", "Name", product.ProductCategoryId);
-            return View("~/Views/Admin/Product/Edit.cshtml", products);
         }
 
 

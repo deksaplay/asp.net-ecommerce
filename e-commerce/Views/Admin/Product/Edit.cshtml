@@ -1,8 +1,9 @@
-﻿﻿@{
-    ViewData["Title"] = "Edit";
+﻿@model e_commerce.Models.Product
+
+@{
+    ViewBag.Title = "Edit Product";
 }
 
-@model e_commerce.Models.Product
 
 <form method="post" enctype="multipart/form-data">
     <div class="border p-3 mt-4">
@@ -10,14 +11,12 @@
             <h2 class="text-primary">Edit Product</h2>
             <hr />
         </div>
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="mb-3 row p-1">
+      
 
             <label asp-for="Name" class="p-0"></label>
             <div class="col-sm-10">
                 <input asp-for="Name" type="text" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
-
             </div>
         </div>
         <div class="mb-3 row p-1">
@@ -72,10 +71,15 @@
                 </a>
             </div>
         </div>
-    </div>
+    
 </form>
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script>
+        if ("@(ViewData["ErrMsg"] as string)" != "") {
+            alert("@(ViewData["ErrMsg"] as string)");
+        }
+    </script>
 }

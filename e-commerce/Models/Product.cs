@@ -19,7 +19,5 @@ namespace e_commerce.Models
 
         public int? ProductCategoryId { get; set; }
         public virtual ProductCategory ProductCategory { get; set; }
-
-
     }
 }

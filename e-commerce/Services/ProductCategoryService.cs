@@ -61,7 +61,7 @@ where id = @p_id
                     @"update ProductCategories set
     name = @p_name,
     description = @p_description,
-    UpdatedAt = get date()
+    UpdatedAt = getdate()
 where id = @p_id
 ";
                 cmd.Parameters.AddWithValue("p_id", updated.Rows[ii]["id"]);

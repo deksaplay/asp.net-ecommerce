@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using e_commerce.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Data.Common;
-using Microsoft.Data.SqlClient;
+using Microsoft.Data.SqlClient; 
 using System.Data;
 
 namespace e_commerce.Controllers.Admin
