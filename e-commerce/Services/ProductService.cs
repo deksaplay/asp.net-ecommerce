@@ -30,6 +30,9 @@ namespace e_commerce.Services
                                  .ToListAsync();
         }
 
-
+        internal async Task GetByIdAsync(object value)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

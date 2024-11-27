@@ -165,16 +165,7 @@ namespace e_commerce.Controllers.Admin
             }
             catch (Exception ex)
             {
-                //// If we got this far, something failed; redisplay the form
-                //// Fetch the product again from the database to return the correct model
-                //var existingProduct = await _productService.GetByIdAsync(product.Id);
-                //if (existingProduct == null)
-                //{
-                //    return NotFound();
-                //}
-
-                //// Fetch the list of products to pass to the view
-                //var products = await _productService.GetAllAsync();
+              
 
 
                 ViewData["Categories"] = new SelectList(await _categoryService.GetAllAsync(), "Id", "Name", product.ProductCategoryId);
@@ -218,7 +209,19 @@ namespace e_commerce.Controllers.Admin
             }
 
             await _productService.DeleteAsync(id.Value);
+
+            // Muat ulang kategori produk yang ada setelah delete
+            var categories = await _categoryService.GetAllProductCategoryAsync(); // Ambil kategori dari service atau database
+            ViewData["Categories"] = new SelectList(categories, "Id", "Name");
+
             return RedirectToAction(nameof(Index));
         }
+
+//        var model = new Product
+//        {
+//            ProductCategoryId = product.ProductCategoryId // Atau nilai default
+//        };
+
+//return View(model);
     }
 }

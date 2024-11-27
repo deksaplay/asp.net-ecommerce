@@ -93,7 +93,7 @@ where id = @p_id
                 })
                 .FirstOrDefaultAsync(pc => pc.Id == id);
         }
-        public async Task<IEnumerable<ProductCategory>> GetAllAsync()
+        public async Task<List<ProductCategory>> GetAllProductCategoryAsync()
         {
             return await _context.ProductCategories.ToListAsync();
         }
