@@ -28,7 +28,7 @@ namespace e_commerce.Controllers
         }
 
         [HttpGet]
-        [Route("UpdateProduct/{id}")]
+        [Route("DetailProduct/{id}")]
         public async Task<IActionResult> DetailsProductAsync(int? id)
         {
             var product = await _productService.GetByIdAsync(id.Value);
@@ -38,6 +38,20 @@ namespace e_commerce.Controllers
             }
             return View("~/Views/ShoppingCart/DetailsProduct.cshtml", product);
         }
+
+        [HttpGet]
+        [Route("DetailsCart/{id}")]
+        public async Task<IActionResult> DetailsCartAsync(int? id)
+        {
+            var product = await _productService.GetByIdAsync(id.Value);
+            if (product == null)
+            {
+                return NotFound();
+            }
+            return View("~/Views/ShoppingCart/DetailsCart.cshtml", product);
+        }
+
+
 
         [Authorize]  // Protect this action, only authenticated users can access
         public IActionResult Checkout()

@@ -30,7 +30,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Admin\Login\" />
     <Folder Include="Views\Admin\Logout\" />
     <Folder Include="Views\Login\" />
     <Folder Include="Views\Register\" />
