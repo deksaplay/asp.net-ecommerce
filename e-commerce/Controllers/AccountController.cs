@@ -2,67 +2,46 @@
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 using e_commerce.Models;
+using e_commerce.Data;
+using Microsoft.CodeAnalysis.Scripting;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
+namespace e_commerce.Controllers
 
-//namespace e_commerce.Controllers
-//{
-//    public class AccountController : Controller
-//    {
-//        private readonly SignInManager<ApplicationUser> _signInManager;
-//        private readonly UserManager<ApplicationUser> _userManager;
+ public class AccountController : Controller
+{
+    private readonly ApplicationDbContext _context;
 
-//        public AccountController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
-//        {
-//            _signInManager = signInManager;
-//            _userManager = userManager;
-//        }
+    public AccountController(ApplicationDbContext context)
+    {
+        _context = context;
+    }
 
-//        // Login action
-//        [HttpGet]
-//        public IActionResult Login()
-//        {
-//            return View();
-//        }
+    // GET: /Account/Register
+    public IActionResult Register()
+    {
+        return View();
+    }
 
-//        [HttpPost]
-//        public async Task<IActionResult> Login(LoginViewModel model)
-//        {
-//            if (ModelState.IsValid)
-//            {
-//                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
-//                if (result.Succeeded)
-//                {
-//                    return RedirectToAction("Checkout", "ShoppingCart");
-//                }
-//                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-//            }
-//            return View(model);
-//        }
+    // POST: /Account/Register
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Register(Customer customer)
+    {
+        if (ModelState.IsValid)
+        {
+            // Hashing password before saving
+            var hashedPassword = BCrypt.Net.BCrypt.HashPassword(customer.Password);
 
-//        // Register action
-//        [HttpGet]
-//        public IActionResult Register()
-//        {
-//            return View();
-//        }
+            customer.Password = hashedPassword;
 
-//        [HttpPost]
-//        public async Task<IActionResult> Register(RegisterViewModel model)
-//        {
-//            if (ModelState.IsValid)
-//            {
-//                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-//                var result = await _userManager.CreateAsync(user, model.Password);
-//                if (result.Succeeded)
-//                {
-//                    await _signInManager.SignInAsync(user, isPersistent: false);
-//                    return RedirectToAction("Checkout", "ShoppingCart");
-//                }
-//                foreach (var error in result.Errors)
-//                {
-//                    ModelState.AddModelError(string.Empty, error.Description);
-//                }
-//            }
-//            return View(model);
-//        }
-//    }
-//}
+            _context.Add(customer);
+            await _context.SaveChangesAsync();
+            TempData["SuccessMessage"] = "Registration successful!";
+            return RedirectToAction(nameof(Login)); // Redirect to login page after registration
+        }
+
+        return View(customer);
+    }
+}
+}

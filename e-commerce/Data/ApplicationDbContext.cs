@@ -15,8 +15,13 @@ namespace e_commerce.Data
         public DbSet<ProductCategory> ProductCategories { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Customer> Customers { get; set; }
 
-
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            // Any custom configurations here
+        }
 
 
 
